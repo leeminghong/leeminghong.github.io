@@ -4,7 +4,7 @@ title:      "Hello,Welcome to my Blog"
 subtitle:   " \"Hello GitHub Page\""
 date:       2020-12-05 12:55:00
 author:     "Minghong"
-header-img: "img/in-post/post-bg-Hello2020.jpg"
+header-img: "img/in-post/post-bg-hello2020.jpg"
 catalog: true
 tags:
     - Life
