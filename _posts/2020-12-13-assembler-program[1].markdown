@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Assembler program[1]"
-subtitle:   " \"asm program|汇编语言学习\""
+subtitle:   " \"asm program|汇编-环境搭建, 编译链接, Debug调试, ADD示例\""
 date:       2020-12-12 18:23:00
 author:     "Minghong"
 header-img: "img/in-post/post-bg-asm.jpg"
@@ -24,7 +24,8 @@ tags:
 #### 2.编写代码
 Example: asm实现 SUM=X+Y
 文件：addtion.asm, 最后放置和masm.exe link.exe 同一个目录下，否则找不到文件.
->DATA SEGMENT ;建立DATA数据段  
+```
+DATA SEGMENT ;建立DATA数据段  
      X DB 11H  
 	   Y DB 23H  
 	   SUM DW 2H  
@@ -43,7 +44,7 @@ MOV AH,4CH
 INT 21H ;返回调用  
 CODE ENDS ;代码段结束  
        END START  ;程序结束  
-
+```
 #### 3.编译
 编译生成目标文件*.obj
 > masm addition.asm
