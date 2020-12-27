@@ -131,16 +131,18 @@ ADC AX,BX 带进位标志的加法，进位直接存到AX中
 #### 6) loop 循环
 语法结构
 MOV CX, 10 ;counter register
->B:
+```
+B:
    code...
- LOOP B
+LOOP B
+```
 
 ![*loop*](http://leeminghong.github.io/img/in-post/asm2/arithmetic-loop.png)
 
 ### 4.执行结果
-![*result*](http://leeminghong.github.io/img/in-post/asm2/arithmetic-result.png)
-字符串尾部需要加$作为结束符.
 ![*printdone*](http://leeminghong.github.io/img/in-post/asm2/arithmetic-printdone.png)
+字符串尾部需要加$作为结束符.
+![*result*](http://leeminghong.github.io/img/in-post/asm2/arithmetic-result.png)
 结果可以看到“与”的结果放在了除法结果的后一个字节，因为这里直接使用"MOV RES_3+1,AX"。
 
 <p id = "build"></p>

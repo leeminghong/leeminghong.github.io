@@ -24,6 +24,7 @@ tags:
 #### 2.编写代码
 Example: asm实现 SUM=X+Y
 文件：addtion.asm, 最后放置和masm.exe link.exe 同一个目录下，否则找不到文件.
+
 ```
 DATA SEGMENT ;建立DATA数据段  
      X DB 11H  
