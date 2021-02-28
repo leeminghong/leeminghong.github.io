@@ -2,7 +2,7 @@
 ================================
 
 
-![](http://leeminghong.github.io/img/preview.png)
+![](http://leeminghong.github.io/img/preview.jpg)
 
 
 --------------------------------------------------
