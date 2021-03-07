@@ -1,0 +1,62 @@
+---
+layout:     post
+title:      " ECC校验码"
+subtitle:   " \"Hamming ECC|HSIAO ECC\""
+date:       2021-2-28 12:50:00
+author:     "Minghong"
+header-img: "img/tags-bg.jpg"
+catalog: true
+tags:
+    - 嵌入式
+    - ECC
+    - 汉明码
+---
+
+> “That little thought or idea is the beginning of great things if you decide to follow it through. ”
+
+
+本文简要介绍Hamming ECC校验原理，并用Excel表格演示校验过程。
+
+
+### 技术提要
+1)ECC,全称为Error Correct Code，错误校验码。通过添加校验位，实现内存数据的校验和保护。数据在内存中或在总线传输中可能会因外部原因导致数据错误，原因包括外部磁场，射线干扰，软硬件操作失误等等，为提高抗干扰能力，需要在内存中添加校验位提高数据的抗干扰能力，这就产生了ECC技术。
+
+2)Hamming ECC code,也为汉明码，是内存数据校验和纠错的ECC方法之一，可实现1bit检测和纠正，2bit检测。该算法特点是用较少的校验码来实现多位的数据校验。例如Code(7,64)。
+
+3）Hamming ECC code原理为: ECC校验位(P1,P2,P3...)和数据位(D1,D2,D3,…)混合排序，校验位在2^q位置T1,T2,T4,T8,T16…T2^q,每个校验位分别是间隔1,2,3,4bit进行异或运算.例如P2,则序号从2开始，连续两个T2,T3,T6,T7,T10,T11,中间也是间隔2序号。
+![*ecc_theory*](http://leeminghong.github.io/img/in-post/ecc/ecc_theory.png)
+
+4)Hamming ECC在工艺上实现的复杂度较高，HSIAO ECC 优化编码的矩阵，使得每个校验位需要参与校验的数据的位数比较平均。
+
+
+### 1.Hamming ECC演示
+#### 1) ECC初始化
+原数据用Dx表示， 校验位用Px表示。
+
+![*data*](http://leeminghong.github.io/img/in-post/ecc/ecc_data.png)
+检验位是放在2^n的位置，依次位T1,T2,T4,T8,这里只需要校验8bit数据，所以4bit校验位。注：数据Q bit所需最少校验位M应满足公式： 2^M - M > N.
+如2^7-7 = 121 >64, 2^6-6=58<64. 所以64bit数据最少需要7 bit校验位才能满足要求。
+![*ecc_init*](http://leeminghong.github.io/img/in-post/ecc/ecc_init.png)
+ECC 校验使用的是奇偶校验，也就是异或操作。初始化可以简化为P1=XOR（T1,T3,T5,T7,T9,T11）。T1是初始化，需要用剩下的来决定。P1=XOR(T3,T5,T7,T9,T11)。
+这里可以转化为另外一种，比如T9, 序号为9，2进制1001，在第1和第4位，那么T9就会参与到P4和P1的异或运算中。最终得到的校验位数据依次为1101.
+#### 2) ECC初始化，校验结果
+![*ecc_result*](http://leeminghong.github.io/img/in-post/ecc/ecc_result.png)
+C1=XOR（T1,T3,T5,T7,T9,T11),初始化之后C1=0,其余C2,C3,C4也均为0，表明没有错误。如果有不为0的数据，表明有错误。
+
+#### 3) 数据坏掉1bit,ECC校验结果
+![*ecc_new_result*](http://leeminghong.github.io/img/in-post/ecc/ecc_new_result.png)
+假如数据为D4位发生错误，由1变为0，即为T7变为0，检验位保持不变的情况下，计算结果Cx，由高到低C4,C3,C2,C1为0b0111,对应的Hex码为7，表明T7（D4）坏掉,实现了1bit数据检测。
+
+#### 4) 添加冗余校验1bit.
+如果2bit发生错误，T5(D2)和T7(D4),那么校验结果为C4C3C2C1为0b0010，表明T3（D1）发生错误，这个和实际不吻合。所以需要添加1bit冗余校验位 P0=XOR(T1,T2,T3,...Tmax)，对所有的数据进行奇偶校验。在这种情况下有2bit结果发生变化，但是P0校验结果不变，而C4C3C2C1显示有错误，表明数据中至少有2bit的错误。
+![*ecc_result*](http://leeminghong.github.io/img/in-post/ecc/ecc_2bit.png)
+如果发生1bit错误，P0一定可以检测出来，C4C3C2C1结果显示有错误，表明该错误为1bit错误
+
+### 2.Haming ECC的改进 HSIAO ECC
+![*ecc_comparasion*](http://leeminghong.github.io/img/in-post/ecc/ecc_comparasion.png)
+图上SEC 为single error correct,1位可校正编码。 SEC-DED 为sigle error correct , double error detected, 即为1位可校正，2bit可检测, 需要添加1bit校验位来实现该算法，即为1.4所讲的情况。
+从以上的检验发现，最低校验位P1需要参与的运算位较高位P4较多,当数据位数越多时，这个现象越明显，那么对于硬件设计需要更复杂的布线，消耗更多的晶体管。Hsiao ECC 使用同样的校验位，可以减少布线，另外解码的逻辑层也较简单，半导体工艺更简单。
+![*ecc_hsiao*](http://leeminghong.github.io/img/in-post/ecc/ecc_hsiao.png)
+如图为Marvel,Intel对Hamming ECC (72,64)的改进优化，可以做到每个校验位只需要26bit参与校验。
+
+<p id = "build"></p>

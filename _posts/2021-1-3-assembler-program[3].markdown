@@ -77,11 +77,11 @@ CODE ENDS ;代码段结束
 
 #### 1) push 入栈/压栈
 ![*push*](http://leeminghong.github.io/img/in-post/asm3/push.png)
-AX,BX 初始化之后内容分别为0x001A, 0x002B, 依次使用Push命令入栈。栈基地址：SS=0769, 栈指针向上移动SP：0 -> 0xfffc，指向0x2B。 -d 769:FFFC可以查看栈内容。
+AX,BX 初始化之后内容分别为0x001A, 0x002B, 依次使用Push命令入栈。栈基地址：SS=0769, 栈指针向上移动SP：0 -> 0xfffc，指向0x2B。 -d 769:FFFC可以查看栈内容。注：X86是小端，低字节在低地址。
 
 #### 2) pop 出栈
 ![*pop_a*](http://leeminghong.github.io/img/in-post/asm3/pop_a.png)
-由于栈指针指向0x2B, 所以使用pop BX, 会将0x2B,0x00放到AX 中， 栈指针向下移动， SP:0XFFFC -> 0XFFFE
+由于栈指针指向0x2B, 所以使用pop BX, 会将0x2B,0x00放到AX中， 栈指针向下移动， SP:0XFFFC -> 0XFFFE
 
 ![*pop_b*](http://leeminghong.github.io/img/in-post/asm3/pop_b.png)
 pop BX, 会将栈内容0x1A,0x00放到BX 中， 栈指针向下移动， SP:0XFFFE -> 0
