@@ -56,7 +56,7 @@ C1=XOR（T1,T3,T5,T7,T9,T11),初始化之后C1=0,其余C2,C3,C4也均为0，表�
 ![*ecc_comparasion*](http://leeminghong.github.io/img/in-post/ecc/ecc_comparasion.png)
 图上SEC 为single error correct,1位可校正编码。 SEC-DED 为sigle error correct , double error detected, 即为1位可校正，2bit可检测, 需要添加1bit校验位来实现该算法，即为1.4所讲的情况。
 从以上的检验发现，最低校验位P1需要参与的运算位较高位P4较多,当数据位数越多时，这个现象越明显，那么对于硬件设计需要更复杂的布线，消耗更多的晶体管。Hsiao ECC 使用同样的校验位，可以减少布线，另外解码的逻辑层也较简单，半导体工艺更简单。
-![*ecc_hsiao*](http://leeminghong.github.io/img/in-post/ecc/ecc_hsiao.png)
+![*ecc_hsiao*](http://leeminghong.github.io/img/in-post/ecc/ecc_hsiao.jpg)
 如图为Marvel,Intel对Hamming ECC (72,64)的改进优化，可以做到每个校验位只需要26bit参与校验。
 
 <p id = "build"></p>
